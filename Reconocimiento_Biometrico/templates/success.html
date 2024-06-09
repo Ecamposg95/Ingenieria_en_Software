@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Bienvenido, {{ user_name }}!</h1>
+    </header>
+    
+    <main>
+        <button onclick="logout()">Cerrar Sesión</button>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Aplicación de Reconocimiento Facial</p>
+    </footer>
+
+    <script>
+        function logout() {
+            window.location.href = "/";
+        }
+    </script>
+</body>
+</html>
