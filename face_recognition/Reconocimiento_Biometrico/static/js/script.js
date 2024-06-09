@@ -12,58 +12,50 @@ navigator.mediaDevices.getUserMedia({ video: true })
 
 function capture() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const dataUrl = canvas.toDataURL('image/jpeg');
-    return dataUrl;
+    return canvas.toDataURL('image/jpeg');
 }
 
-function register() {
+async function register() {
     const name = document.getElementById('name').value;
     const photo = capture();
 
-    fetch('/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: name,
-            photo: photo
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, photo })
+        });
+        const data = await response.json();
         if (data.message === "Registro exitoso") {
             alert('Registro exitoso');
         } else {
             alert('Error en el registro');
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error("Error:", error);
-    });
+    }
 }
 
-function login() {
+async function login() {
     const photo = capture();
 
-    fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            photo: photo
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ photo })
+        });
+        const data = await response.json();
         if (data.success) {
             window.location.href = `/success?user_name=${data.name}`;
         } else {
             alert('No se encontró ninguna coincidencia');
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error("Error:", error);
-    });
+    }
 }
